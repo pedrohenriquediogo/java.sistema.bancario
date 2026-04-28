@@ -1,4 +1,6 @@
-package entities;
+package model.entities;
+
+import model.exceptions.DomainException;
 
 public class Conta 
 {
@@ -15,21 +17,22 @@ public class Conta
 	
 	public void deposito(double v_deposito) 
 	{
-		if(v_deposito > 0) {
-		this.saldo += v_deposito;
-		} else {
-			System.out.println("Valor inválido.");
+		if(v_deposito <= 0) {
+			throw new DomainException("Valor inválido.");
 		}
+		this.saldo += v_deposito;
 	}
 	
-	public boolean saque(double v_saque) 
+	public void saque(double v_saque) 
 	{
-		if(this.saldo >= v_saque) {
-			this.saldo -= v_saque;
-			return true;
-			} else {
-			return false;
+		if(this.saldo < v_saque) {
+			throw new DomainException("Saldo insuficiente.");
 			}
+		if(v_saque <= 0){
+				throw new DomainException("Valor negativo.");
+			}
+			
+		this.saldo-= v_saque;
 	}
 	
 	public String getNome() 
